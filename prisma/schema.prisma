@@ -10,13 +10,42 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 //user schema
 model User {
   //unqie string as an ID thats what uuid does
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
+  //when the account was created
   createdAt DateTime @default(now())
-  username String @unique
-  password String 
+  //username thats unique
+  username  String   @unique
+  password  String
+
+  Product Product[]
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  //limiting name to 255 characters
+  name        String   @db.VarChar(255)
+  //setting up relation to user
+  belongsToId String
+  belongsTo   User     @relation(fields: [belongsToId], references: [id])
+}
+
+enum UPDATE_STATUS {
+  IN_PROGRESS
+  SHIPPED
+  DEPRECATED
+}
+model Update {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt DateTime
+  title String
+  body String
+  status UPDATE_STATUS @default(IN_PROGRESS)
+  //qestion makr means optional
+  version String?
 
 }
