@@ -9,3 +9,14 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+//user schema
+model User {
+  //unqie string as an ID thats what uuid does
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  username String @unique
+  password String 
+
+}
