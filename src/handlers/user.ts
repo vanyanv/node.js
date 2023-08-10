@@ -28,4 +28,7 @@ export const signin = async (req, res) => {
     res.json({ message: 'Not Authrorized' });
     return;
   }
+
+  const token = createJWT(user);
+  res.json({ token });
 };
