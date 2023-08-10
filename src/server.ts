@@ -3,6 +3,7 @@ import router from './router';
 //morgan is a logging tool
 import morgan from 'morgan';
 import cors from 'cors';
+import { protect } from './modules/auth';
 //makes the api/server
 const app = express();
 
@@ -21,6 +22,6 @@ app.get('/', (req, res) => {
   res.json({ message: 'hello' });
 });
 //use lets you apply a global option
-app.use('/api', router);
+app.use('/api', protect, router);
 
 export default app;
