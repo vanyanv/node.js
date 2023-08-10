@@ -23,5 +23,5 @@ app.get('/', (req, res) => {
 });
 //use lets you apply a global option
 app.use('/api', protect, router);
-
+app.use()
 export default app;
