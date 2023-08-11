@@ -20,7 +20,7 @@ model User {
   username  String   @unique
   password  String
 
-  Product Product[]
+  product Product[]
 }
 
 model Product {
@@ -32,6 +32,7 @@ model Product {
   belongsToId String
   belongsTo   User     @relation(fields: [belongsToId], references: [id])
   updates     Update[]
+  @@unique([id,belongsToId])
 }
 
 enum UPDATE_STATUS {

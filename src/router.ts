@@ -1,15 +1,14 @@
 import { Router } from 'express';
 import { body, oneOf, validationResult } from 'express-validator';
 import { handleInputErrors } from './modules/middleware';
+import { createProduct, getOneProduct, getProducts } from './handlers/product';
 
 // making a new router
 const router = Router();
 //router are sub apps, seperate from app, which is global
 
 // product
-router.get('/product', (req, res) => {
-  res.json({ message: 'Hello' });
-});
+router.get('/product', getProducts);
 router.get('/product/:id', () => {});
 router.put(
   '/product/:id',
@@ -17,7 +16,12 @@ router.put(
   handleInputErrors,
   (req, res) => {}
 );
-router.post('/product/', body('name').isString(), handleInputErrors, () => {});
+router.post(
+  '/product/',
+  body('name').isString(),
+  handleInputErrors,
+  createProduct
+);
 router.delete('/product/:id', () => {});
 
 //update
