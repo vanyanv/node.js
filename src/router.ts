@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { body, validationResult } from 'express-validator';
+import { body, oneOf, validationResult } from 'express-validator';
+import { handleInputErrors } from './modules/middleware';
 
 // making a new router
 const router = Router();
@@ -10,31 +11,50 @@ router.get('/product', (req, res) => {
   res.json({ message: 'Hello' });
 });
 router.get('/product/:id', () => {});
-router.put('/product/:id', body('name').isString(), (req, res) => {
-  //to get the validation results
-  const errors = validationResult(req);
-  //check to see for errors
-  if (!errors.isEmpty()) {
-    res.status(400);
-    //sending back json with a array of errors
-    res.json({ errors: errors.array() });
-  }
-});
-router.post('/product/', () => {});
+router.put(
+  '/product/:id',
+  body('name').isString(),
+  handleInputErrors,
+  (req, res) => {}
+);
+router.post('/product/', body('name').isString(), handleInputErrors, () => {});
 router.delete('/product/:id', () => {});
 
 //update
 router.get('/update', () => {});
 router.get('/update/:id', () => {});
-router.put('/update/:id', () => {});
-router.post('/update/', () => {});
+router.put(
+  '/update/:id',
+  body('title').optional(),
+  body('body').optional(),
+  body('status').isIn(['IN_PROGRESS', 'SHIPPED', 'DEPRECATED']),
+  body('version').optional(),
+  () => {}
+);
+router.post(
+  '/update/',
+  body('title').exists().isString(),
+  body('body').exists().isString(),
+  () => {}
+);
 router.delete('/update/:id', () => {});
 
 //update point
 router.get('/updatepoint', () => {});
 router.get('/updatepoint/:id', () => {});
-router.put('/updatepoint/:id', () => {});
-router.post('/updatepoint/', () => {});
+router.put(
+  '/updatepoint/:id',
+  body('name').optional().isString(),
+  body('description').optional().isString(),
+  () => {}
+);
+router.post(
+  '/updatepoint/',
+  body('name').isString(),
+  body('description').isString(),
+  body('updateID').exists().isString(),
+  () => {}
+);
 router.delete('/updatepoint/:id', () => {});
 
 //dfdf
